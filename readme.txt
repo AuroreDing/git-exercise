@@ -4,3 +4,4 @@ aaaaa.
 bbbb.
 ccc
 ddd
+Creating a new branch is quick.
