@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>第三十一到第三十三天2：需求三</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="region-radio-wrapper"></div>
+    <div id="product-radio-wrapper"></div>
+    <div id="table-wrapper"></div>
+</body>
+<script>
+    var regionWrapper = document.querySelector('#region-radio-wrapper');
+    var productWrapper = document.querySelector('#product-radio-wrapper');
+
+    function createCheckBox(wrapper,arr){
+        //生成全选框/自定义属性设置
+        createIpt('input','checkbox','全选','class','region-all',wrapper);   
+        //生成单选框
+        for(var i = 0;i<arr.length;i++){
+            createIpt('input','checkbox',arr[i],'class','region-single',wrapper);
+        }
+
+        //checkbox事件逻辑
+        wrapper.onclick = function(e){
+            var e = e || window.event;
+            var target = e.target || e.srcElement; 
+            var singleBox = document.getElementsByClassName('region-single');
+            var checkAll = document.getElementsByClassName('region-all');
+            if(target.checked == false){
+                if(target.getAttribute('class') == 'region-all'){
+                    target.checked = true;
+                    console.log(e.checked);
+                    for(var i = 0;i<singleBox.length;i++){
+                        singleBox[i].checked = true;
+                    }
+                }else{
+                    var num = 0;
+                    target.checked = true;
+                    for(var i = 0;i<singleBox.length;i++){
+                        num = singleBox[i].checked == true?num++ : num;
+                    }
+                    checkAll.checked = num == singleBox.length?true:false;
+                }
+            }else{
+                var num = 0;
+                for(var i = 0;i < singleBox.length;i++){
+                    num = singleBox[i].checked == true? num++ : num;
+                }
+                if(num == singleBox.length){
+                    target.checked = false;
+                    checkAll.checked = false;
+                }else if(num == 1){
+                    target.checked = true;
+                }else{
+                    target.checked = false;
+                }
+            }
+            
+        }
+    }
+
+
+    //生成checkBox：type/value/自定义属性/html
+    //缺点：占内存，建议创建frag片段的方式优化
+    function createIpt(tagName,typeValue,value,propertyName,propertyValue,parentEle){  //参数：标签名,type值,value值（checkBox),自定义属性名,自定义属性值,父元素      
+        var label = document.createElement('label');
+        label.innerHTML = value;
+
+        var tag = document.createElement(tagName);
+        tag.type = 'checkbox';
+        tag.value = value;
+        
+        tag.setAttribute(propertyName,propertyValue);  //自定义属性
+        label.appendChild(tag);
+        parentEle.appendChild(label);
+    }
+    
+    //生成一组checkbox
+    createCheckBox(regionWrapper,['华东','华南','华北']);
+
+///////////////////数据列表
+    let sourceData = [{
+        product: "手机",
+        region: "华东",
+        sale: [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270]
+    }, {
+        product: "手机",
+        region: "华北",
+        sale: [80, 70, 90, 110, 130, 145, 150, 160, 170, 185, 190, 200]
+    }, {
+        product: "手机",
+        region: "华南",
+        sale: [220, 200, 240, 250, 260, 270, 280, 295, 310, 335, 355, 380]
+    }, {
+        product: "笔记本",
+        region: "华东",
+        sale: [50, 60, 80, 110, 30, 20, 70, 30, 420, 30, 20, 20]
+    }, {
+        product: "笔记本",
+        region: "华北",
+        sale: [30, 35, 50, 70, 20, 15, 30, 50, 710, 130, 20, 20]
+    }, {
+        product: "笔记本",
+        region: "华南",
+        sale: [80, 120, 130, 140, 70, 75, 120, 90, 550, 120, 110, 100]
+    }, {
+        product: "智能音箱",
+        region: "华东",
+        sale: [10, 30, 4, 5, 6, 5, 4, 5, 6, 5, 5, 25]
+    }, {
+        product: "智能音箱",
+        region: "华北",
+        sale: [15, 50, 15, 15, 12, 11, 11, 12, 12, 14, 12, 40]
+    }, {
+        product: "智能音箱",
+        region: "华南",
+        sale: [10, 40, 10, 6, 5, 6, 8, 6, 6, 6, 7, 26]
+    }]
+</script>
+</html>

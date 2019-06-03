@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>第三十一到第三十三天：我是一个精明的小卖家1</title>
+    <style>
+        table{
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <select id="region-select">
+        <option>华东</option>
+        <option>华南</option>
+        <option>华北</option>
+    </select>
+    <div id="table-wrapper"></div>
+</body>
+<script>
+    var regionSelect = document.querySelector('#region-select');
+    var optList = document.querySelectorAll('option');
+    var tableWrapper = document.querySelector('#table-wrapper');
+
+   //默认地区选项渲染表格
+    window.onload = function(){
+        renderTable(optList[0].value);
+    }
+    regionSelect.onchange =function(){
+        while(tableWrapper.hasChildNodes()){
+            tableWrapper.removeChild(tableWrapper.firstChild);
+        }
+        
+        var selectRegion= getData();
+        renderTable(selectRegion);//调用函数获得选择的地区值//获取数据渲染新的表格
+    }
+
+///////////////根据select选项获取数据
+    function getData(){
+        var index = regionSelect.selectedIndex;
+        return optList[index].value;
+    }
+
+//////////////渲染新的表格
+    function renderTable(data){
+        //输出表头
+        var table = document.createElement('table');
+        var thead = document.createElement('tr');
+        createTd('th',"商品",thead);   //创建"商品"
+        createTd('th',"地区",thead);  //创建"地区"
+        for(var i = 1;i <= 12;i++){
+            var text = i + '月';
+            createTd('th',text,thead);
+        }
+        table.appendChild(thead);
+
+        //遍历数据       
+        for(var a = 0,len = sourceData.length; a < len; a++){    //遍历数据sourceData                   
+            var frag = document.createDocumentFragment();
+            var tr = document.createElement('tr');   //创建行元素
+            if(sourceData[a].region == data){     
+                 createTd('td',sourceData[a].product,frag);  //创建商品名称列
+                 createTd('td',sourceData[a].region,frag);   //创建地区名称列
+                 var sale = sourceData[a].sale;    //获取12个月的销售额
+                 for(var b = 0,saleLen = sale.length;b<saleLen;b++){
+                    createTd('td',sale[b],frag);
+                 }
+                 tr.appendChild(frag);
+                 table.appendChild(tr);  
+            }        
+        }
+        tableWrapper.appendChild(table);   //把生成的HTML内容赋给table-wrapper
+    }
+
+//////////////创建表格列元素
+    function createTd(ele,eleText,eleParent){  
+        var ele = document.createElement(ele);
+        ele.innerHTML = eleText;
+        eleParent.appendChild(ele);
+    }
+
+
+///////////////////数据列表
+    let sourceData = [{
+        product: "手机",
+        region: "华东",
+        sale: [120, 100, 140, 160, 180, 185, 190, 210, 230, 245, 255, 270]
+    }, {
+        product: "手机",
+        region: "华北",
+        sale: [80, 70, 90, 110, 130, 145, 150, 160, 170, 185, 190, 200]
+    }, {
+        product: "手机",
+        region: "华南",
+        sale: [220, 200, 240, 250, 260, 270, 280, 295, 310, 335, 355, 380]
+    }, {
+        product: "笔记本",
+        region: "华东",
+        sale: [50, 60, 80, 110, 30, 20, 70, 30, 420, 30, 20, 20]
+    }, {
+        product: "笔记本",
+        region: "华北",
+        sale: [30, 35, 50, 70, 20, 15, 30, 50, 710, 130, 20, 20]
+    }, {
+        product: "笔记本",
+        region: "华南",
+        sale: [80, 120, 130, 140, 70, 75, 120, 90, 550, 120, 110, 100]
+    }, {
+        product: "智能音箱",
+        region: "华东",
+        sale: [10, 30, 4, 5, 6, 5, 4, 5, 6, 5, 5, 25]
+    }, {
+        product: "智能音箱",
+        region: "华北",
+        sale: [15, 50, 15, 15, 12, 11, 11, 12, 12, 14, 12, 40]
+    }, {
+        product: "智能音箱",
+        region: "华南",
+        sale: [10, 40, 10, 6, 5, 6, 8, 6, 6, 6, 7, 26]
+    }]
+</script>
+</html>
